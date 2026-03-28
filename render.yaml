@@ -1,0 +1,16 @@
+# Render.com blueprint — set secrets in the dashboard: MONGO_URI, JWT_SECRET, CLIENT_URL, email vars
+services:
+  - type: web
+    name: kaam-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "false"
+      - key: OTP_DEBUG
+        value: "false"
