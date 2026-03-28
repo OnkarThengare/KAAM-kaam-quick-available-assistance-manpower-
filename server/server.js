@@ -47,6 +47,15 @@ app.use(
 );
 app.use(express.json({ limit: "1mb" }));
 
+// Root URL (browser or health check on "/") — full status at GET /api
+app.get("/", (req, res) => {
+  res.status(200).json({
+    service: "KAAM API",
+    health: "ok",
+    detail: "/api",
+  });
+});
+
 app.get("/api", (req, res) => {
   res.json({
     name: "KAAM API",
