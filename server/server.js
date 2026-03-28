@@ -47,8 +47,35 @@ app.use(
 );
 app.use(express.json({ limit: "1mb" }));
 
-// Root URL (browser or health check on "/") — full status at GET /api
+// Root: HTML for browsers, JSON for scripts / health probes without Accept: text/html
 app.get("/", (req, res) => {
+  const wantsHtml = (req.get("Accept") || "").includes("text/html");
+  if (wantsHtml) {
+    res
+      .status(200)
+      .type("html")
+      .send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>KAAM API</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:36rem;margin:3rem auto;padding:0 1rem;color:#1e293b;line-height:1.5}
+    h1{color:#1e3a8a;font-size:1.25rem}
+    a{color:#1e3a8a}
+    code{background:#f1f5f9;padding:.15rem .4rem;border-radius:.25rem;font-size:.9em}
+  </style>
+</head>
+<body>
+  <h1>KAAM API is running</h1>
+  <p>This URL is the <strong>backend only</strong>. The React app is deployed separately.</p>
+  <p>Status JSON: <a href="/api"><code>GET /api</code></a></p>
+  <p>Deploy the <code>client/</code> folder (e.g. Vercel) and set <code>VITE_API_URL</code> to this host + <code>/api</code>.</p>
+</body>
+</html>`);
+    return;
+  }
   res.status(200).json({
     service: "KAAM API",
     health: "ok",
