@@ -1,4 +1,6 @@
-# Render.com blueprint — set secrets in the dashboard: MONGO_URI, JWT_SECRET, CLIENT_URL, email vars
+# Render.com — Web Service for KAAM API (server/)
+# After first deploy, set MONGO_URI and CLIENT_URL in the dashboard (Environment).
+# JWT_SECRET is auto-generated on first Blueprint deploy if you use this file.
 services:
   - type: web
     name: kaam-api
@@ -14,3 +16,9 @@ services:
         value: "false"
       - key: OTP_DEBUG
         value: "false"
+      # Required for the app to start (see server/server.js)
+      - key: JWT_SECRET
+        generateValue: true
+      # Add these in Render → Environment (do not commit real values):
+      # MONGO_URI = your Atlas connection string
+      # CLIENT_URL = your frontend URL, e.g. https://your-app.onrender.com or https://your-site.vercel.app

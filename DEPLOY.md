@@ -49,6 +49,12 @@ Set on your Node host (Render, Railway, Fly.io, VPS, etc.):
 
 Optional: use `render.yaml` in this repo as a starting point for Render.
 
+**Render: `Missing environment variable: JWT_SECRET`**
+
+In production the API **exits** if `JWT_SECRET` is unset. In the Render dashboard: **Environment** → **Add environment variable** → `JWT_SECRET` = a long random string (e.g. run `openssl rand -hex 32` locally, or use a password manager). Redeploy.
+
+Also set **`MONGO_URI`** (Atlas) and **`CLIENT_URL`** (your live frontend URL, comma-separated if several). The blueprint’s `render.yaml` can include `JWT_SECRET` with `generateValue: true` so Render creates one on first deploy—if you created the service manually, add `JWT_SECRET` yourself.
+
 ## 4. Frontend (Vite) build
 
 Build from `client/`:
